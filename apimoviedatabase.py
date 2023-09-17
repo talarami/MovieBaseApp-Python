@@ -47,9 +47,10 @@ headers = {
 # conn.request("GET", "/titles/search/title/Lost?exact=true", headers=headers) 
 
 
-# 5) searching for movies by title + limit of titles per page:
+# 5) searching for movies by title + limit of titles per page + base info:
 
-# conn.request("GET", "/titles/search/title/Lost?exact=true&limit=1", headers=headers) 
+# conn.request("GET", "/titles?titleType=Lost&info=base_info&limit=1", headers=headers)
+
 
 
 # 6) shows genres:
@@ -73,24 +74,101 @@ print("Welcome to Movie Base!")
 name = input("What's your name?")
 print("Hello " + name + ("! Nice to meet you! \nWhat would you like to do?"))
 
+
+# asking user what he wants to do:
+
 whatToDo = {
     "1": "find a movie to watch", 
-    "2": "see a list of movie genres", 
-    "3": "see a list of upcoming movies"}
+    "2": "search for movie by title",
+    "3": "see a list of movie genres", 
+    "4": "see a list of upcoming movies"}
 
 for c, desc in whatToDo.items():
     print(f"{c}. {desc}")
 
 choice = input("Please choose a number: ")
 
+user_input = " "
+
+
 while choice not in whatToDo:
     choice = input(f"Choose one of: {', '.join(whatToDo)}: ")
 
 print(f"You chose: {whatToDo[choice]}")
 
-user_input = " "
-input_message = "Choose an option: \n"
 
+# asking user how many page results he wants to get (option 1, 2, 4):
+
+option = input("How many search results per page do you want to get? Please choose a number from 1 to 10: ") 
+
+limitNumber = {
+    "1": "1",
+    "2": "2",
+    "3": "3",
+    "4": "4",
+    "5": "5",
+    "6": "6",
+    "7": "7",
+    "8": "8",
+    "9": "9",
+    "10": "10"
+}
+
+
+user_input = " "
+
+while option not in limitNumber:
+    option = input(f"You need to choose a number from: {', '.join(limitNumber)}: ")
+
+print(f"You chose: {limitNumber[option]} search results per page")
+
+# asking user for movie title
+
+movieTitle = input("Please enter movie title: ")
+print(f"Entered movie title: " + movieTitle)
+
+# asking user if the movie title he entered has to be the exact name of a title or not:
+
+def searchExactMovieTitle():
+    exactMovieTitle = input("Can the search results include movie titles that contain other words in addition to the word you entered? Please enter y for yes or n for no.")
+    if exactMovieTitle == "y":
+        print("You chose: yes")
+    if exactMovieTitle == "n":
+        print("You chose: no")
+    if exactMovieTitle not in ["y", "n"]:
+        input("Please type y or n")
+    return searchExactMovieTitle
+
+searchExactMovieTitle()
+
+"""
+if choice[user_input] == 1:
+    print("wybrales jeden")
+"""
+
+"""
+if choice == 1:
+    print("wybrales jeden")
+"""
+
+"""
+if whatToDo[choice] == 1:
+    print("wybrales opcje jeden")
+"""
+    
+"""
+if user_input == 2 in whatToDo[choice]:
+    print("wybrales opcje dwa")
+"""
+"""
+if 2 == 2:
+    print("dwa rowna sie dwa")
+"""
+"""
+for choice in whatToDo[choice]:
+    if choice == 1:
+        print("you chose option one")
+"""
 
 
 # wyświetla się odpowiedź z api:
