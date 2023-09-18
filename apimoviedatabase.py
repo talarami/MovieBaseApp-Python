@@ -1,31 +1,14 @@
 import requests
-
-URL = "https://moviesdatabase.p.rapidapi.com/titles/series/%7BseriesId%7D"
-
-headers = {
-	"X-RapidAPI-Key": "1762556fbcmsh9ec8fd6d574b37cp1c1d46jsn676ebe2791e6",
-	"X-RapidAPI-Host": "moviesdatabase.p.rapidapi.com"
-}
-
-response = requests.get(URL, headers=headers)
-
-print(response.json())
-
-
-# ok
-
 import http.client
-
-conn = http.client.HTTPSConnection("moviesdatabase.p.rapidapi.com")
+import apikey
+import constants
+import os
 
 headers = {
-    'X-RapidAPI-Key': "1762556fbcmsh9ec8fd6d574b37cp1c1d46jsn676ebe2791e6",
-    'X-RapidAPI-Host': "moviesdatabase.p.rapidapi.com"
+	"X-RapidAPI-Key": apikey.APIKEY,
+	"X-RapidAPI-Host": constants.BASEURL
 }
-
-
-
-# ok
+conn = http.client.HTTPSConnection(constants.BASEURL)
 
 # 1) see upcoming movies/tv series:
 
@@ -69,63 +52,107 @@ headers = {
 
 
 # PROJECT
-
+os.system('cls')
 print("Welcome to Movie Base!")
-name = input("What's your name?")
-print("Hello " + name + ("! Nice to meet you! \nWhat would you like to do?"))
+name = input("What's your name?\n")
+os.system('cls')
+#print("Hello " + name + ("! Nice to meet you! \nWhat would you like to do?"))
 
+title1 = "Hello " + name + "! Nice to meet you! \nWhat would you like to do?"
+options1 = ["find a movie to watch", "search for movie by title", "see a list of movie genres", "see a list of upcoming movies"]
+title2 = "How many search results do you want to get? Please choose a number from 1 to 10:"
+
+def printPage(question, answers):
+    print(question)
+    for index, elem in enumerate(answers):
+        print(str(index+1) + ". " + elem)
+
+def askQuestion(question, numberOfAnswers):
+    choice = input(question)
+
+    while int(choice) < 1 or int(choice) > numberOfAnswers:
+        choice = input(f"Choose one of the numbers between 1 and " + str(numberOfAnswers) + ": ") 
+
+    return choice  
+
+printPage(title1, options1)
 
 # asking user what he wants to do:
-
-whatToDo = {
-    "1": "find a movie to watch", 
-    "2": "search for movie by title",
-    "3": "see a list of movie genres", 
-    "4": "see a list of upcoming movies"}
-
-for c, desc in whatToDo.items():
-    print(f"{c}. {desc}")
-
-choice = input("Please choose a number: ")
-
-user_input = " "
-
-
-while choice not in whatToDo:
-    choice = input(f"Choose one of: {', '.join(whatToDo)}: ")
-
-print(f"You chose: {whatToDo[choice]}")
-
-
-# asking user how many page results he wants to get (option 1, 2, 4):
-
-option = input("How many search results per page do you want to get? Please choose a number from 1 to 10: ") 
-
-limitNumber = {
-    "1": "1",
-    "2": "2",
-    "3": "3",
-    "4": "4",
-    "5": "5",
-    "6": "6",
-    "7": "7",
-    "8": "8",
-    "9": "9",
-    "10": "10"
-}
-
-
-user_input = " "
-
-while option not in limitNumber:
-    option = input(f"You need to choose a number from: {', '.join(limitNumber)}: ")
-
-print(f"You chose: {limitNumber[option]} search results per page")
+chosenAnswer = askQuestion("Please choose a number: ", len(options1))
+os.system('cls')
+print(f"You chose: {options1[int(chosenAnswer)-1]}")
 
 # asking user for movie title
+def askForMovieTitle():
+    movieTitle = input("Please enter movie title: ")
+    print(f"Entered movie title: " + movieTitle)
 
-movieTitle = input("Please enter movie title: ")
-print(f"Entered movie title: " + movieTitle)
+# asking user how many page results he wants to get (option 1, 2, 4):
+def howManyResults():
+    finalChoice = askQuestion(title2, 10)
+    print(f"You chose: {finalChoice} search results")
+
+def chooseGenre():
+    print("You chose: choose genre")
+
+def displayResults():
+    print("display results")
+
+def whetherItsExactTitle():
+    print("You chose: whether it exact title")
+    
+def showGenres():
+    print("You chose: show genres")
+
+def returnToMenu():
+    print("You chose: return to menu")
+
+def upcomingMovies():
+    print("You chose: upcoming movies")
+
+def handleAnswer(answer):
+    if answer ==  "1":
+        chooseGenre()
+        howManyResults()
+        displayResults()
+        returnToMenu()
+        # 1. choose genre
+        # 2. how many results
+        # 3. display results
+        return
+    elif answer == "2":
+        askForMovieTitle()
+        whetherItsExactTitle()
+        howManyResults()
+        displayResults()
+        returnToMenu()
+        # 1. ask for title - askForMovieTitle()
+        # 2. ask whether its exact title Y/N
+        # 3. how many results
+        # 4. display results
+        return
+    elif answer == "3":
+        showGenres()
+        returnToMenu()
+        # 1. show genres
+        # 2. on click return to question 1
+        return
+    elif answer == "4":
+        howManyResults()
+        upcomingMovies()
+        returnToMenu()
+        # 1. how many results
+        # 2. show upcoming movies
+        return
+    else:
+        print("choose a different number")
+        return
+
+handleAnswer(chosenAnswer)
+
+
+
+
 
 # asking user if the movie title he entered has to be the exact name of a title or not:
 
@@ -139,36 +166,11 @@ def searchExactMovieTitle():
         input("Please type y or n")
     return searchExactMovieTitle
 
-searchExactMovieTitle()
 
-"""
-if choice[user_input] == 1:
-    print("wybrales jeden")
-"""
 
-"""
-if choice == 1:
-    print("wybrales jeden")
-"""
 
-"""
-if whatToDo[choice] == 1:
-    print("wybrales opcje jeden")
-"""
-    
-"""
-if user_input == 2 in whatToDo[choice]:
-    print("wybrales opcje dwa")
-"""
-"""
-if 2 == 2:
-    print("dwa rowna sie dwa")
-"""
-"""
-for choice in whatToDo[choice]:
-    if choice == 1:
-        print("you chose option one")
-"""
+
+
 
 
 # wyświetla się odpowiedź z api:
