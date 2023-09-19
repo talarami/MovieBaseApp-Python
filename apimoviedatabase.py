@@ -56,11 +56,7 @@ os.system('cls')
 print("Welcome to Movie Base!")
 name = input("What's your name?\n")
 os.system('cls')
-#print("Hello " + name + ("! Nice to meet you! \nWhat would you like to do?"))
 
-title1 = "Hello " + name + "! Nice to meet you! \nWhat would you like to do?"
-options1 = ["find a movie to watch", "search for movie by title", "see a list of movie genres", "see a list of upcoming movies"]
-title2 = "How many search results do you want to get? Please choose a number from 1 to 10:"
 
 def printPage(question, answers):
     print(question)
@@ -72,147 +68,131 @@ def askQuestion(question, numberOfAnswers):
 
     while int(choice) < 1 or int(choice) > numberOfAnswers:
         choice = input(f"Choose one of the numbers between 1 and " + str(numberOfAnswers) + ": ") 
-
     return choice  
-
-printPage(title1, options1)
-
-# asking user what he wants to do:
-chosenAnswer = askQuestion("Please choose a number: ", len(options1))
-os.system('cls')
-print(f"You chose: {options1[int(chosenAnswer)-1]}")
 
 # asking user for movie title
 def askForMovieTitle():
-    movieTitle = input("Please enter movie title: ")
-    print(f"Entered movie title: " + movieTitle)
+    os.system("cls")
+    title = input("Please enter movie title: ")
+    return title
 
 # asking user how many page results he wants to get (option 1, 2, 4):
 def howManyResults():
-    finalChoice = askQuestion(title2, 10)
-    print(f"You chose: {finalChoice} search results")
+    os.system("cls")
+    return askQuestion("How many search results do you want to get? Please choose a number 1 to 10:", 10)
+ 
+# showing user a list of genres and letting user choose a genre
+def chooseGenre(genres):
+    os.system("cls")
+    printPage("List of genres:", genres)
+    return askQuestion("Choose genre:", len(genres))
 
-def chooseGenre():
-    print("You chose: choose genre")
-
-def displayResults():
-    print("display results")
-
+# asking user if its exact movie title
 def whetherItsExactTitle():
-    print("You chose: whether it exact title")
-    
+    os.system("cls")
+    answer = ""
+    while answer.lower() != "y" and answer.lower() != "n":
+        answer = input("Is that an exact movie title? (Y/N)")
+    return answer
+
+# showing user a list of genres
 def showGenres():
+    os.system("cls")
     print("You chose: show genres")
+    genres = getGenres()
+    return printPage("List of genres", genres)
 
 def returnToMenu():
-    print("You chose: return to menu")
+    input("Press enter to return to menu...")
+    displayMenu()
 
-def upcomingMovies():
+# API calls
+
+def getGenres():
+    genres = ["drama", "horror", "comedy"]
+    # conn.request("GET", "/titles/utils/genres", headers=headers)
+    # res = conn.getresponse()
+    # data = res.read()
+    # print(data.decode("utf-8"))
+    return genres
+
+def getUpcomingMovies(numberOfResults):
+    os.system("cls")
     print("You chose: upcoming movies")
+    listOfMovies = ["Terminator", "Titanic", "ABC", "Lost", "Fargo"]
+    return listOfMovies[:numberOfResults]
 
+def getMoviesWithinGenre(genre, numberOfResults):
+    listOfMovies = ["Terminator", "Titanic", "ABC", "Lost", "Fargo"]
+    return listOfMovies[:numberOfResults]
+
+def getMovieByTitle(title, exact, numberOfResults):
+    listOfMovies = ["Terminator", "Titanic", "ABC", "Lost", "Fargo"]
+    return listOfMovies[:numberOfResults]
+
+# Application logic
 def handleAnswer(answer):
     if answer ==  "1":
-        chooseGenre()
-        howManyResults()
-        displayResults()
+        # 1.get genres from API
+        genres = getGenres()
+        # 2. choose genre
+        genreIndex = chooseGenre(genres)
+        genre = genres[int(genreIndex) - 1]
+        print("You chose " + genre)
+        # 3. how many results
+        numberOfResults = howManyResults()
+        print("You chose " + numberOfResults + "results.")
+        # 4. call to api to get x results within this genre
+        result = getMoviesWithinGenre(genre, int(numberOfResults))
+        # 5. display results
+        printPage("List of movies:", result)
+        # 6. return to menu
         returnToMenu()
-        # 1. choose genre
-        # 2. how many results
-        # 3. display results
         return
     elif answer == "2":
-        askForMovieTitle()
-        whetherItsExactTitle()
-        howManyResults()
-        displayResults()
-        returnToMenu()
-        # 1. ask for title - askForMovieTitle()
+        # 1. ask for title
+        title = askForMovieTitle()
+        print("You chose " + title)
         # 2. ask whether its exact title Y/N
+        exact = whetherItsExactTitle()
         # 3. how many results
-        # 4. display results
+        numberOfResults = howManyResults()
+        # 4. call api for movie data
+        result = getMovieByTitle(title, exact, int(numberOfResults))
+        # 5. display results
+        printPage("List of movies:", result)
+        # 6. return to menu
+        returnToMenu()
         return
     elif answer == "3":
-        showGenres()
-        returnToMenu()
         # 1. show genres
-        # 2. on click return to question 1
+        showGenres()
+        # 2. return to menu
+        returnToMenu()
         return
     elif answer == "4":
-        howManyResults()
-        upcomingMovies()
-        returnToMenu()
         # 1. how many results
-        # 2. show upcoming movies
+        numberOfResults = howManyResults()
+        # 2. get movies from api
+        movies = getUpcomingMovies(int(numberOfResults))
+        # 3. show upcoming movies
+        printPage("A list of upcoming movies:", movies)
+        # 4. return to menu
+        returnToMenu()
         return
     else:
-        print("choose a different number")
         return
 
-handleAnswer(chosenAnswer)
+def displayMenu():
+    os.system("cls")
+    title = "Hello " + name + "! Nice to meet you! \nWhat would you like to do?"
+    options = ["find a movie to watch", "search for movie by title", "see a list of movie genres", "see a list of upcoming movies"]
 
+    printPage(title, options)
+    chosenAnswer = askQuestion("Please choose a number: ", len(options))
+    os.system("cls")
+    print(f"You chose: {options[int(chosenAnswer)-1]}")
+    handleAnswer(chosenAnswer)
 
+displayMenu()
 
-
-
-# asking user if the movie title he entered has to be the exact name of a title or not:
-
-def searchExactMovieTitle():
-    exactMovieTitle = input("Can the search results include movie titles that contain other words in addition to the word you entered? Please enter y for yes or n for no.")
-    if exactMovieTitle == "y":
-        print("You chose: yes")
-    if exactMovieTitle == "n":
-        print("You chose: no")
-    if exactMovieTitle not in ["y", "n"]:
-        input("Please type y or n")
-    return searchExactMovieTitle
-
-
-
-
-
-
-
-
-# wyświetla się odpowiedź z api:
-# conn.request("GET", "/titles/utils/genres", headers=headers)
-# res = conn.getresponse()
-# data = res.read()
-# print(data.decode("utf-8"))
-
-# response = requests.get(url = URL, params = conn.request("GET", "/titles/utils/genres", headers=headers))
-# print(response.json())
-
-"""
-conn.request("GET", "/titles/utils/genres", headers=headers)
-def choices():
-    if whatToDo[choice] == 2:
-        print(data.decode("utf-8"))
-
-print(data.decode("utf-8"))
-
-"""
-"""
-def optionsss(optionone, optiontwo, optionthree):
-    optionone = 0
-    optiontwo = conn.request("GET", "/titles/utils/genres", headers=headers)
-    optionthree = 0
-    print(optiontwo)
-
-"""
-
-"""
-if whatToDo[choice] == 2:
-    optiontwo = conn.request("GET", "/titles/utils/genres", headers=headers)
-    res = conn.getresponse()
-    data = res.read()
-    print(data.decode("utf-8"))
-"""
-
-"""
-res = conn.getresponse()
-data = res.read()
-conn.request("GET", "/titles/utils/genres", headers=headers)
-
-if user_input == 2:
-    print(data.decode("utf-8"))
-"""
