@@ -1,62 +1,10 @@
-import requests
-import http.client
-import apikey
-import constants
+import apicalls
 import os
 
-headers = {
-	"X-RapidAPI-Key": apikey.APIKEY,
-	"X-RapidAPI-Host": constants.BASEURL
-}
-conn = http.client.HTTPSConnection(constants.BASEURL)
-
-# 1) see upcoming movies/tv series:
-
-# conn.request("GET", "/titles/x/upcoming", headers=headers) 
-
-
-# 2) searching for movies/tv series by keyword:
-
-# conn.request("GET", "/titles/search/keyword/children", headers=headers) 
-
-
-# 3) searching for movies by title, it DOES NOT have to be exactly word "Lost" as a title, for example: "Lost Dogs", "Lost Vegas" etc:
-
-# conn.request("GET", "/titles/search/title/Lost", headers=headers)
-
-
-# 4) searching for movies by title, IT HAS to be exactly word "Lost" as a title:
-
-# conn.request("GET", "/titles/search/title/Lost?exact=true", headers=headers) 
-
-
-# 5) searching for movies by title + limit of titles per page + base info:
-
-# conn.request("GET", "/titles?titleType=Lost&info=base_info&limit=1", headers=headers)
-
-
-
-# 6) shows genres:
-
-# conn.request("GET", "/titles/utils/genres", headers=headers)
-
-
-# 7) shows movie/tv series titles based on chosen genre + limit of titles per page:
-
-# conn.request("GET", "/titles?genre=Horror&limit=5", headers=headers)
-
-
-# 8) shows movie/tv series titles based on chosen genre + limit of titles per page + basic info:
-
-# conn.request("GET", "/titles?genre=Horror&info=base_info&limit=5", headers=headers)
-
-
-# PROJECT
 os.system('cls')
 print("Welcome to Movie Base!")
 name = input("What's your name?\n")
 os.system('cls')
-
 
 def printPage(question, answers):
     print(question)
@@ -99,28 +47,17 @@ def whetherItsExactTitle():
 def showGenres():
     os.system("cls")
     print("You chose: show genres")
-    genres = getGenres()
+    genres = apicalls.getGenres()
     return printPage("List of genres", genres)
 
 def returnToMenu():
     input("Press enter to return to menu...")
     displayMenu()
 
-# API calls
-
-def getGenres():
-    genres = ["drama", "horror", "comedy"]
-    # conn.request("GET", "/titles/utils/genres", headers=headers)
-    # res = conn.getresponse()
-    # data = res.read()
-    # print(data.decode("utf-8"))
-    return genres
-
 def getUpcomingMovies(numberOfResults):
     os.system("cls")
     print("You chose: upcoming movies")
-    listOfMovies = ["Terminator", "Titanic", "ABC", "Lost", "Fargo"]
-    return listOfMovies[:numberOfResults]
+    return apicalls.getUpcomingMovies(numberOfResults)
 
 def getMoviesWithinGenre(genre, numberOfResults):
     listOfMovies = ["Terminator", "Titanic", "ABC", "Lost", "Fargo"]
@@ -134,7 +71,7 @@ def getMovieByTitle(title, exact, numberOfResults):
 def handleAnswer(answer):
     if answer ==  "1":
         # 1.get genres from API
-        genres = getGenres()
+        genres = apicalls.getGenres()
         # 2. choose genre
         genreIndex = chooseGenre(genres)
         genre = genres[int(genreIndex) - 1]
@@ -174,7 +111,7 @@ def handleAnswer(answer):
         # 1. how many results
         numberOfResults = howManyResults()
         # 2. get movies from api
-        movies = getUpcomingMovies(int(numberOfResults))
+        movies = getUpcomingMovies(numberOfResults)
         # 3. show upcoming movies
         printPage("A list of upcoming movies:", movies)
         # 4. return to menu

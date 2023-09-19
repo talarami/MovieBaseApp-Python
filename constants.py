@@ -1,1 +1,1 @@
-BASEURL = "moviesdatabase.p.rapidapi.com"
+BASEURL = "https://moviesdatabase.p.rapidapi.com"
