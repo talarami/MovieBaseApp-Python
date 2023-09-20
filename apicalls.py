@@ -40,7 +40,6 @@ def getMoviesWithinGenre(chosenGenre):
         results.append(title + " " + str(releaseYear))
     return results
 
-
 def getMovieByTitle(title, exact, numberOfResults):
     exactPart = ""  
     if exact == True:
