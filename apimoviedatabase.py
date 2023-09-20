@@ -59,9 +59,10 @@ def getUpcomingMovies(numberOfResults):
     print("You chose: upcoming movies")
     return apicalls.getUpcomingMovies(numberOfResults)
 
-def getMoviesWithinGenre(genre, numberOfResults):
-    listOfMovies = ["Terminator", "Titanic", "ABC", "Lost", "Fargo"]
-    return listOfMovies[:numberOfResults]
+def getMoviesWithinGenre(chosenGenre, numberOfResults):
+    os.system("cls")
+    print(" ")
+    return apicalls.getMoviesWithinGenre(chosenGenre, numberOfResults)
 
 def getMovieByTitle(title, exact, numberOfResults):
     listOfMovies = ["Terminator", "Titanic", "ABC", "Lost", "Fargo"]
@@ -80,7 +81,7 @@ def handleAnswer(answer):
         numberOfResults = howManyResults()
         print("You chose " + numberOfResults + "results.")
         # 4. call to api to get x results within this genre
-        result = getMoviesWithinGenre(genre, int(numberOfResults))
+        result = getMoviesWithinGenre(genre, numberOfResults)
         # 5. display results
         printPage("List of movies:", result)
         # 6. return to menu
