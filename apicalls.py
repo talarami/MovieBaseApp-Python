@@ -29,30 +29,29 @@ def getUpcomingMovies(numberOfResults):
         results.append(title + " " + str(day) + "/" + str(month) + "/" + str(year))
     return results
 
-def getMoviesWithinGenre(chosenGenre, numberOfResults):
-    response = requests.get(constants.BASEURL + "/titles?genre=" + chosenGenre + "&info=base_info&limit=" + numberOfResults, headers=headers)
+def getMoviesWithinGenre(chosenGenre):
+    response = requests.get(constants.BASEURL + "/titles?genre=" + chosenGenre + "&info=base_info&limit=10", headers=headers)
     dict = response.json()
     list = dict.get("results")
     results = []
     for result in list:
         title = result["titleText"]["text"]
-        releaseYear = result["releaseYear"]
-        year = releaseYear["year"]
-        results.append(title + " " + str(year))
+        releaseYear = result["releaseYear"]["year"]
+        results.append(title + " " + str(releaseYear))
     return results
 
 
-
-"""
-# get movie by title + exact title + number of results
-conn.request("GET", "/titles/search/title/Lost?exact=true&titleType=movie&limit=3", headers=headers)
-res = conn.getresponse()
-data = res.read()
-print(data.decode("utf-8"))
-
-# get movie by title + not exact title + number of results
-conn.request("GET", "/titles/search/title/Lost?titleType=movie&limit=3", headers=headers)
-res = conn.getresponse()
-data = res.read()
-print(data.decode("utf-8"))
-"""
+def getMovieByTitle(title, exact, numberOfResults):
+    exactPart = ""  
+    if exact == True:
+        exactPart = "exact=true&"
+    response = requests.get(constants.BASEURL + "/titles/search/title/" + title + "?" + exactPart + "titleType=movie&info=base_info&limit=" + numberOfResults, headers=headers)
+    dict = response.json()
+    list = dict.get("results")
+    results = []
+    for result in list:
+        print(result)
+        title = result["titleText"]["text"]
+        releaseYear = result["releaseYear"]["year"]
+        results.append(title + " " + str(releaseYear))
+    return results

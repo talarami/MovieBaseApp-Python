@@ -41,7 +41,8 @@ def whetherItsExactTitle():
     answer = ""
     while answer.lower() != "y" and answer.lower() != "n":
         answer = input("Is that an exact movie title? (Y/N)")
-    return answer
+    #if answer == "y" return True, if not return False
+    return answer == "y"
 
 # showing user a list of genres
 def showGenres():
@@ -62,11 +63,12 @@ def getUpcomingMovies(numberOfResults):
 def getMoviesWithinGenre(chosenGenre, numberOfResults):
     os.system("cls")
     print(" ")
-    return apicalls.getMoviesWithinGenre(chosenGenre, numberOfResults)
+    return apicalls.getMoviesWithinGenre(chosenGenre)[slice(int(numberOfResults))]
 
 def getMovieByTitle(title, exact, numberOfResults):
-    listOfMovies = ["Terminator", "Titanic", "ABC", "Lost", "Fargo"]
-    return listOfMovies[:numberOfResults]
+    os.system("cls")
+    print(" ")
+    return apicalls.getMovieByTitle(title, exact, numberOfResults)
 
 # Application logic
 def handleAnswer(answer):
@@ -96,7 +98,7 @@ def handleAnswer(answer):
         # 3. how many results
         numberOfResults = howManyResults()
         # 4. call api for movie data
-        result = getMovieByTitle(title, exact, int(numberOfResults))
+        result = getMovieByTitle(title, exact, numberOfResults)
         # 5. display results
         printPage("List of movies:", result)
         # 6. return to menu
