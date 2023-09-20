@@ -49,8 +49,9 @@ def getMovieByTitle(title, exact, numberOfResults):
     list = dict.get("results")
     results = []
     for result in list:
-        print(result)
         title = result["titleText"]["text"]
         releaseYear = result["releaseYear"]["year"]
         results.append(title + " " + str(releaseYear))
     return results
+
+

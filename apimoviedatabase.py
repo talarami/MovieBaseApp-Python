@@ -1,11 +1,11 @@
 import apicalls
 import os
 
+
 os.system('cls')
 print("Welcome to Movie Base!")
 name = input("What's your name?\n")
 os.system('cls')
-
 def printPage(question, answers):
     print(question)
     for index, elem in enumerate(answers):
@@ -135,4 +135,7 @@ def displayMenu():
     handleAnswer(chosenAnswer)
 
 displayMenu()
+
+
+
 
