@@ -13,7 +13,7 @@ line10 =["5 \n"]
 line11 = ["List of movies: \n", "1. Titanic 2023 \n", "2. Titanic 2018 \n", "3. Titanic 2016 \n", "4. Titanic 2012 \n", "5. Titanic 1997 \n", "Press enter to return to menu... \n"]
 
 
-list1 = [file1.writelines(line1), file1.writelines(line2), file1.writelines(line3), file1.writelines(line4), file1.writelines(line5), file1.writelines(line6), file1.writelines(line7), file1.writelines(line8), file1.writelines(line9), file1.writelines(line10), file1.writelines(line11)]
+file1.writelines(line1), file1.writelines(line2), file1.writelines(line3), file1.writelines(line4), file1.writelines(line5), file1.writelines(line6), file1.writelines(line7), file1.writelines(line8), file1.writelines(line9), file1.writelines(line10), file1.writelines(line11)
 
 
 file1.close()
