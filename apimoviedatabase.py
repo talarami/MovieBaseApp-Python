@@ -1,11 +1,15 @@
 import apicalls
 import os
+from datetime import datetime
 
+# datetime object containing current date and time
+fileName = datetime.now().strftime("%d-%m-%Y-%H-%M-%S") +".txt"
 
 os.system('cls')
 print("Welcome to Movie Base!")
 name = input("What's your name?\n")
 os.system('cls')
+
 def printPage(question, answers):
     print(question)
     for index, elem in enumerate(answers):
@@ -13,7 +17,6 @@ def printPage(question, answers):
 
 def askQuestion(question, numberOfAnswers):
     choice = input(question)
-
     while int(choice) < 1 or int(choice) > numberOfAnswers:
         choice = input(f"Choose one of the numbers between 1 and " + str(numberOfAnswers) + ": ") 
     return choice  
@@ -73,8 +76,14 @@ def getMovieByTitle(title, exact, numberOfResults):
 # Application logic
 def handleAnswer(answer):
     if answer ==  "1":
+        file = open(fileName, "w")
+        file.writelines("\n")
         # 1.get genres from API
         genres = apicalls.getGenres()
+        
+        for genre in genres:
+            file.writelines(genre)
+            file.writelines("\n")
         # 2. choose genre
         genreIndex = chooseGenre(genres)
         genre = genres[int(genreIndex) - 1]
@@ -86,13 +95,21 @@ def handleAnswer(answer):
         result = getMoviesWithinGenre(genre, numberOfResults)
         # 5. display results
         printPage("List of movies:", result)
+        for res in result:
+            file.writelines(res)
+            file.writelines("\n")
+            file.close()
         # 6. return to menu
         returnToMenu()
         return
     elif answer == "2":
+        file = open(fileName, "w")
+        file.writelines("\n")
         # 1. ask for title
         title = askForMovieTitle()
         print("You chose " + title)
+        file.writelines(title)
+        file.writelines("\n") 
         # 2. ask whether its exact title Y/N
         exact = whetherItsExactTitle()
         # 3. how many results
@@ -101,6 +118,11 @@ def handleAnswer(answer):
         result = getMovieByTitle(title, exact, numberOfResults)
         # 5. display results
         printPage("List of movies:", result)
+        for res in result:
+            file.writelines(res)
+            file.writelines("\n")
+
+        file.close()
         # 6. return to menu
         returnToMenu()
         return
@@ -111,12 +133,19 @@ def handleAnswer(answer):
         returnToMenu()
         return
     elif answer == "4":
+        file = open(fileName, "w")
+        file.writelines("\n")
         # 1. how many results
         numberOfResults = howManyResults()
         # 2. get movies from api
         movies = getUpcomingMovies(numberOfResults)
         # 3. show upcoming movies
         printPage("A list of upcoming movies:", movies)
+        for movie in movies:
+            file.writelines(movie)
+            file.writelines("\n")
+
+        file.close()
         # 4. return to menu
         returnToMenu()
         return
