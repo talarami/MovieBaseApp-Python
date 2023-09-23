@@ -76,7 +76,7 @@ def getMovieByTitle(title, exact, numberOfResults):
 # Application logic
 def handleAnswer(answer):
     if answer ==  "1":
-        file = open(fileName, "w")
+        file = open(fileName, "a")
         file.writelines("\n")
         # 1.get genres from API
         genres = apicalls.getGenres()
@@ -98,12 +98,12 @@ def handleAnswer(answer):
         for res in result:
             file.writelines(res)
             file.writelines("\n")
-            file.close()
+        file.close()
         # 6. return to menu
         returnToMenu()
         return
     elif answer == "2":
-        file = open(fileName, "w")
+        file = open(fileName, "a")
         file.writelines("\n")
         # 1. ask for title
         title = askForMovieTitle()
@@ -133,7 +133,7 @@ def handleAnswer(answer):
         returnToMenu()
         return
     elif answer == "4":
-        file = open(fileName, "w")
+        file = open(fileName, "a")
         file.writelines("\n")
         # 1. how many results
         numberOfResults = howManyResults()
