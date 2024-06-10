@@ -1,4 +1,4 @@
-﻿An application that connects with API and allows users to search for a movie to watch.
+﻿An application that uses an API and allows users to search for a movie to watch based on their preferences.
 # API KEY REGISTRATION
 1. Sign in on rapidapi.com
 2. Go to https://rapidapi.com/developer/apps/new-app
